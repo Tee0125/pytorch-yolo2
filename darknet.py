@@ -29,10 +29,10 @@ class Reorg(nn.Module):
         assert(W % stride == 0)
         ws = stride
         hs = stride
-        x = x.view(B, C, H/hs, hs, W/ws, ws).transpose(3,4).contiguous()
-        x = x.view(B, C, H/hs*W/ws, hs*ws).transpose(2,3).contiguous()
-        x = x.view(B, C, hs*ws, H/hs, W/ws).transpose(1,2).contiguous()
-        x = x.view(B, hs*ws*C, H/hs, W/ws)
+        x = x.view(B, C, H//hs, hs, W//ws, ws).transpose(3,4).contiguous()
+        x = x.view(B, C, H//hs*W//ws, hs*ws).transpose(2,3).contiguous()
+        x = x.view(B, C, hs*ws, H//hs, W//ws).transpose(1,2).contiguous()
+        x = x.view(B, hs*ws*C, H//hs, W//ws)
         return x
 
 class GlobalAvgPool2d(nn.Module):
@@ -84,7 +84,6 @@ class Darknet(nn.Module):
             ind = ind + 1
             #if ind > 0:
             #    return x
-
             if block['type'] == 'net':
                 continue
             elif block['type'] == 'convolutional' or block['type'] == 'maxpool' or block['type'] == 'reorg' or block['type'] == 'avgpool' or block['type'] == 'softmax' or block['type'] == 'connected':
@@ -146,7 +145,7 @@ class Darknet(nn.Module):
                 kernel_size = int(block['size'])
                 stride = int(block['stride'])
                 is_pad = int(block['pad'])
-                pad = (kernel_size-1)/2 if is_pad else 0
+                pad = (kernel_size-1)//2 if is_pad else 0
                 activation = block['activation']
                 model = nn.Sequential()
                 if batch_normalize:
