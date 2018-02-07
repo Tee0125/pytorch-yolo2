@@ -3,6 +3,7 @@ import torch.optim as optim
 import os
 import torch
 import numpy as np
+from builtins import range as xrange
 from darknet import Darknet
 from PIL import Image
 from utils import image2torch, convert2cpu
