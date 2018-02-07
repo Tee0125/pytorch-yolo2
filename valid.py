@@ -65,10 +65,10 @@ def valid(datacfg, cfgfile, weightfile, outfile):
                 y2 = (box[1] + box[3]/2.0) * height
 
                 det_conf = box[4]
-                for j in range((len(box)-5)/2):
+                for j in range((len(box)-5)//2):
                     cls_conf = box[5+2*j]
                     cls_id = box[6+2*j]
-                    prob =det_conf * cls_conf
+                    prob = det_conf * cls_conf
                     fps[cls_id].write('%s %f %f %f %f %f\n' % (fileId, prob, x1, y1, x2, y2))
 
     for i in range(m.num_classes):
